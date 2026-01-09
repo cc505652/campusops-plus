@@ -129,81 +129,96 @@ Focus admin resources on recurring maintenance issues to reduce SLA delays.
 
   return (
     <div>
-      <h2>Admin Dashboard</h2>
+      <h2 style={{ marginBottom: '2rem', color: 'var(--primary)' }}>Admin Dashboard</h2>
 
       {/* AI SUMMARY */}
-      <button onClick={generateWeeklySummary} disabled={aiLoading}>
-        {aiLoading ? "Generating..." : "Generate Weekly Summary"}
-      </button>
+      <div className="glass-panel" style={{ padding: '1.5rem', marginBottom: '2rem' }}>
+        <button onClick={generateWeeklySummary} disabled={aiLoading} className="btn-primary" style={{ marginBottom: '1rem' }}>
+          {aiLoading ? 'Generating...' : 'Generate Weekly Summary'}
+        </button>
 
-      {aiSummary && (
-        <div style={{ border: "1px solid #ccc", padding: 10, margin: "12px 0" }}>
-          <strong>Weekly Summary</strong>
-          <p>{aiSummary}</p>
-        </div>
-      )}
+        {aiSummary && (
+          <div>
+            <strong style={{ color: 'var(--primary)' }}>Weekly Summary</strong>
+            <p style={{ marginTop: '0.5rem', whiteSpace: 'pre-line' }}>{aiSummary}</p>
+          </div>
+        )}
+      </div>
 
       {/* HEATMAP */}
-      <h3>Issue Distribution</h3>
-      <table border="1" cellPadding="6">
-        <tbody>
-          {Object.entries(hostelCounts).map(([k, v]) => (
-            <tr key={k}>
-              <td>{k}</td>
-              <td>{v}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="glass-panel" style={{ padding: '1.5rem', marginBottom: '2rem' }}>
+        <h3 style={{ marginTop: 0, color: 'var(--primary)' }}>Issue Distribution</h3>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <tbody>
+            {Object.entries(hostelCounts).map(([k, v]) => (
+              <tr key={k}>
+                <td style={{ padding: '8px', borderBottom: '1px solid var(--glass-border)' }}>{k}</td>
+                <td style={{ padding: '8px', borderBottom: '1px solid var(--glass-border)' }}>{v}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {/* FILTERS */}
-      <div style={{ margin: "12px 0" }}>
-        <select onChange={e => setFilterStatus(e.target.value)}>
-          <option value="all">All Status</option>
-          <option value="open">Open</option>
-          <option value="assigned">Assigned</option>
-          <option value="resolved">Resolved</option>
-        </select>
+      <div className="glass-panel" style={{ padding: '1.5rem', marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          <select onChange={e => setFilterStatus(e.target.value)} style={{ flex: 1, minWidth: '150px' }}>
+            <option value="all">All Status</option>
+            <option value="open">Open</option>
+            <option value="assigned">Assigned</option>
+            <option value="resolved">Resolved</option>
+          </select>
 
-        <select onChange={e => setFilterCategory(e.target.value)} style={{ marginLeft: 8 }}>
-          <option value="all">All Categories</option>
-          <option value="water">Water</option>
-          <option value="electricity">Electricity</option>
-          <option value="wifi">Wi-Fi</option>
-          <option value="mess">Mess</option>
-          <option value="maintenance">Maintenance</option>
-        </select>
+          <select onChange={e => setFilterCategory(e.target.value)} style={{ flex: 1, minWidth: '150px' }}>
+            <option value="all">All Categories</option>
+            <option value="water">Water</option>
+            <option value="electricity">Electricity</option>
+            <option value="wifi">Wi-Fi</option>
+            <option value="mess">Mess</option>
+            <option value="maintenance">Maintenance</option>
+          </select>
+        </div>
       </div>
 
       {/* ISSUES */}
-      {sortedIssues.map(issue => {
-        const sla = getSlaFlag(issue);
-        return (
-          <div key={issue.id} style={{ border: "1px solid #ddd", padding: 10, marginBottom: 8 }}>
-            <strong>{issue.title}</strong>
-            <span style={{
-              marginLeft: 8,
-              color: "#fff",
-              padding: "2px 6px",
-              background: sla === "overdue" ? "#d32f2f" :
-                          sla === "delayed" ? "#f57c00" : "#388e3c"
-            }}>
-              {sla.toUpperCase()}
-            </span>
-
-            <p>Status: {issue.status}</p>
-            <p>Urgency: {issue.urgency}</p>
-            <p>Location: {issue.location}</p>
-
-            {issue.status === "open" && (
-              <button onClick={() => updateStatus(issue, "assigned")}>Assign</button>
-            )}
-            {issue.status === "assigned" && (
-              <button onClick={() => updateStatus(issue, "resolved")}>Resolve</button>
-            )}
-          </div>
-        );
-      })}
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', 
+        gap: '1.5rem' 
+      }}>
+        {sortedIssues.map(issue => {
+          const sla = getSlaFlag(issue);
+          return (
+            <div key={issue.id} className="glass-panel" style={{ padding: '1.5rem' }}>
+              <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>{issue.title}</h4>
+              <span style={{
+                display: 'inline-block',
+                marginBottom: '0.5rem',
+                color: "#fff",
+                padding: "4px 8px",
+                borderRadius: '6px',
+                fontSize: '0.8rem',
+                background: sla === "overdue" ? "var(--danger)" :
+                            sla === "delayed" ? "var(--warning)" : "var(--success)"
+              }}>
+                {sla.toUpperCase()}
+              </span>
+              <p style={{ margin: '0.5rem 0', color: 'var(--text-muted)' }}>Status: <span style={{ color: 'var(--primary)' }}>{issue.status}</span></p>
+              <p style={{ margin: '0.5rem 0', color: 'var(--text-muted)' }}>Urgency: {issue.urgency}</p>
+              <p style={{ margin: '0.5rem 0', color: 'var(--text-muted)' }}>Location: {issue.location}</p>
+              <div style={{ marginTop: '1rem' }}>
+                {issue.status === "open" && (
+                  <button onClick={() => updateStatus(issue, "assigned")} className="btn-primary" style={{ width: '100%', marginBottom: '0.5rem' }}>Assign</button>
+                )}
+                {issue.status === "assigned" && (
+                  <button onClick={() => updateStatus(issue, "resolved")} className="btn-primary" style={{ width: '100%' }}>Resolve</button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

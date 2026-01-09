@@ -27,19 +27,20 @@ function App() {
   if (!role) return <Login onLogin={() => {}} />;
 
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <div style={{ flex: 1, padding: '2rem' }}>
+        {role === "student" && (
+          <>
+            <SubmitIssue />
+            <hr />
+            <IssueList />
+          </>
+        )}
+
+        {role === "admin" && <AdminIssueList />}
+      </div>
       <Logout />
-
-      {role === "student" && (
-        <>
-          <SubmitIssue />
-          <hr />
-          <IssueList />
-        </>
-      )}
-
-      {role === "admin" && <AdminIssueList />}
-    </>
+    </div>
   );
 }
 

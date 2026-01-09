@@ -40,16 +40,24 @@ export default function IssueList() {
 
   return (
     <div>
-      <h2>My Issues</h2>
+      <h2 style={{ marginBottom: '2rem', color: 'var(--primary)' }}>My Issues</h2>
 
-      {issues.length === 0 && <p>No issues yet.</p>}
+      {issues.length === 0 && <p style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No issues yet.</p>}
 
-      {issues.map(issue => (
-        <div key={issue.id} style={{ border: "1px solid #ccc", margin: 8, padding: 8 }}>
-          <strong>{issue.title}</strong>
-          <p>Status: {issue.status}</p>
-        </div>
-      ))}
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
+        gap: '1.5rem' 
+      }}>
+        {issues.map(issue => (
+          <div key={issue.id} className="glass-panel" style={{ padding: '1.5rem' }}>
+            <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>{issue.title}</h4>
+            <p style={{ margin: '0.5rem 0', color: 'var(--text-muted)' }}>Status: <span style={{ color: 'var(--primary)' }}>{issue.status}</span></p>
+            {issue.category && <p style={{ margin: '0.5rem 0', color: 'var(--text-muted)' }}>Category: {issue.category}</p>}
+            {issue.urgency && <p style={{ margin: '0.5rem 0', color: 'var(--text-muted)' }}>Urgency: {issue.urgency}</p>}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

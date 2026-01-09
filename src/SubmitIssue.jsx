@@ -77,37 +77,46 @@ export default function SubmitIssue() {
   };
 
   return (
-    <form onSubmit={submit}>
-      <h3>Report Issue</h3>
+    <div className="glass-panel" style={{ maxWidth: '500px', margin: '0 auto 2rem', padding: '2rem' }}>
+      <h3 style={{ marginBottom: '1.5rem', color: 'var(--primary)' }}>Report Issue</h3>
 
-      <input
-        placeholder="Issue title"
-        value={title}
-        onChange={(e) => {
-          setTitle(e.target.value);
-          checkDuplicates(e.target.value);
-        }}
-      />
+      <form onSubmit={submit}>
+        <div style={{ marginBottom: '1rem' }}>
+          <input
+            placeholder="Issue title"
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              checkDuplicates(e.target.value);
+            }}
+            required
+          />
+        </div>
 
-      {warning && <p style={{ color: "#f57c00" }}>{warning}</p>}
+        {warning && <p style={{ color: 'var(--warning)', marginBottom: '1rem' }}>{warning}</p>}
 
-      <select value={category} onChange={e => setCategory(e.target.value)}>
-        <option value="">Category</option>
-        <option value="water">Water</option>
-        <option value="electricity">Electricity</option>
-        <option value="wifi">Wi-Fi</option>
-        <option value="mess">Mess</option>
-        <option value="maintenance">Maintenance</option>
-      </select>
+        <div style={{ marginBottom: '1rem' }}>
+          <select value={category} onChange={e => setCategory(e.target.value)} required>
+            <option value="">Category</option>
+            <option value="water">Water</option>
+            <option value="electricity">Electricity</option>
+            <option value="wifi">Wi-Fi</option>
+            <option value="mess">Mess</option>
+            <option value="maintenance">Maintenance</option>
+          </select>
+        </div>
 
-      <select value={urgency} onChange={e => setUrgency(e.target.value)}>
-        <option value="">Urgency</option>
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
+        <div style={{ marginBottom: '1.5rem' }}>
+          <select value={urgency} onChange={e => setUrgency(e.target.value)} required>
+            <option value="">Urgency</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
 
-      <button type="submit">Submit</button>
-    </form>
+        <button type="submit" className="btn-primary">Submit Issue</button>
+      </form>
+    </div>
   );
 }
