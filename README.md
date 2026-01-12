@@ -116,6 +116,19 @@ Admin can generate a weekly operations report:
 - Has fallback if AI is unavailable
 
 ---
+### Login Credentials
+Admin Dashboard:- 
+Username:- admin@test.com
+password:- test1234
+
+Student Dashboard:-
+Username:- student@test.com
+password:- test1234
+
+Username:- student2@test.com
+password:- Test@1234
+
+---
 
 ## 🏗 Tech Stack
 
